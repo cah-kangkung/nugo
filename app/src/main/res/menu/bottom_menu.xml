@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/baseline_home_black_24dp"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/navigation_calorie_calculator"
+        android:icon="@drawable/baseline_calculate_black_24dp"
+        android:title="Calorie Calculator" />
+
+    <item
+        android:id="@+id/navigation_daily_recipe"
+        android:icon="@drawable/baseline_menu_book_black_24dp"
+        android:title="Daily Recipe" />
+
+</menu>

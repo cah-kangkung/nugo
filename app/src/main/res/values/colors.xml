@@ -8,14 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorPrimary">#278be3</color>
-    <color name="colorPrimaryVariant">#278be3</color>
+    <color name="colorPrimary">#A7E790</color>
+    <color name="colorPrimaryVariant">#B4E6A8</color>
     <color name="colorOnPrimary">#FFFFFFFF</color>
 
     <color name="colorSecondary">#0f5998</color>
     <color name="colorSecondaryVariant">#4075a2</color>
     <color name="colorOnSecondary">#4075a2</color>
 
-    <color name="colorNavIcon">#dae9f6</color>
+    <color name="colorNavIcon">#B4E6A8</color>
     <color name="colorNavText">#01294b</color>
 </resources>
