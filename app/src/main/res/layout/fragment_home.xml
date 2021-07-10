@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
     android:animateLayoutChanges="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="24dp">
 
     <TextView
         android:id="@+id/tv_welcome_message"
@@ -22,12 +22,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_search_food_nutrition"
+    <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/autocomplete_search_food"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        android:background="@drawable/rounded_edit_text"
+        android:background="@drawable/rounded_search_bar"
+        android:completionThreshold="1"
+        android:dropDownHeight="150dp"
         android:hint="Get Nutritional Value..."
         android:imeOptions="actionDone"
         android:maxLines="1"
@@ -43,9 +45,9 @@
         android:layout_height="32dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/baseline_search_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_search_food_nutrition"
-        app:layout_constraintEnd_toEndOf="@+id/et_search_food_nutrition"
-        app:layout_constraintTop_toTopOf="@+id/et_search_food_nutrition" />
+        app:layout_constraintBottom_toBottomOf="@+id/autocomplete_search_food"
+        app:layout_constraintEnd_toEndOf="@+id/autocomplete_search_food"
+        app:layout_constraintTop_toTopOf="@+id/autocomplete_search_food" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
