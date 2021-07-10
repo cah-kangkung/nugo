@@ -22,7 +22,7 @@
             android:layout_marginTop="52dp"
             android:text="Food Name"
             android:textAlignment="center"
-            android:textSize="20dp"
+            android:textSize="28dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -169,6 +169,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:paddingLeft="32dp"
+            android:clipToPadding="false"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"

@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_hint_parent"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="120dp"
     android:layout_height="wrap_content"
     android:layout_marginVertical="8dp"
-    android:layout_marginRight="28dp">
+    android:layout_marginRight="28dp"
+    android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_hint_image"
@@ -34,11 +34,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
-        android:text="Food Name"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_hint_image" />
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:text="Food Name Food Name"
+        android:textAlignment="center" />
 
 </LinearLayout>
