@@ -1,17 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
+    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
+        android:id="@+id/tv_welcome_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="76dp"
+        android:maxEms="15"
+        android:text="@string/welcome_message"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_search_food_nutrition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="Get Nutritional Value..."
+        android:imeOptions="actionDone"
+        android:maxLines="1"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:textCursorDrawable="@drawable/edit_text_cursor"
+        app:layout_constraintTop_toBottomOf="@+id/tv_welcome_message"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <ImageView
+        android:id="@+id/iv_button_search"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/baseline_search_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_search_food_nutrition"
+        app:layout_constraintEnd_toEndOf="@+id/et_search_food_nutrition"
+        app:layout_constraintTop_toTopOf="@+id/et_search_food_nutrition" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
