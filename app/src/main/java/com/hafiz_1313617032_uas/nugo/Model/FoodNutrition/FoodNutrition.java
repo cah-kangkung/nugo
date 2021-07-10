@@ -15,6 +15,9 @@ public class FoodNutrition implements Parcelable {
     @SerializedName("parsed")
     @Expose
     private List<Parsed> parsed = null;
+    @SerializedName("hints")
+    @Expose
+    private List<Hint> hints = null;
 
     public String getText() {
         return text;
@@ -32,6 +35,15 @@ public class FoodNutrition implements Parcelable {
         this.parsed = parsed;
     }
 
+    public List<Hint> getHints() {
+        return hints;
+    }
+
+    public void setHints(List<Hint> hints) {
+        this.hints = hints;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -41,11 +53,13 @@ public class FoodNutrition implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.text);
         dest.writeTypedList(this.parsed);
+        dest.writeTypedList(this.hints);
     }
 
     public void readFromParcel(Parcel source) {
         this.text = source.readString();
         this.parsed = source.createTypedArrayList(Parsed.CREATOR);
+        this.hints = source.createTypedArrayList(Hint.CREATOR);
     }
 
     public FoodNutrition() {
@@ -54,9 +68,10 @@ public class FoodNutrition implements Parcelable {
     protected FoodNutrition(Parcel in) {
         this.text = in.readString();
         this.parsed = in.createTypedArrayList(Parsed.CREATOR);
+        this.hints = in.createTypedArrayList(Hint.CREATOR);
     }
 
-    public static final Parcelable.Creator<FoodNutrition> CREATOR = new Parcelable.Creator<FoodNutrition>() {
+    public static final Creator<FoodNutrition> CREATOR = new Creator<FoodNutrition>() {
         @Override
         public FoodNutrition createFromParcel(Parcel source) {
             return new FoodNutrition(source);

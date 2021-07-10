@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class Nutrients implements Parcelable {
     @SerializedName("ENERC_KCAL")
     @Expose
-    private Integer enercKcal;
+    private Double enercKcal;
     @SerializedName("PROCNT")
     @Expose
     private Double procnt;
@@ -21,13 +21,13 @@ public class Nutrients implements Parcelable {
     private Double chocdf;
     @SerializedName("FIBTG")
     @Expose
-    private Integer fibtg;
+    private Double fibtg;
 
-    public Integer getEnercKcal() {
+    public Double getEnercKcal() {
         return enercKcal;
     }
 
-    public void setEnercKcal(Integer enercKcal) {
+    public void setEnercKcal(Double enercKcal) {
         this.enercKcal = enercKcal;
     }
 
@@ -55,11 +55,11 @@ public class Nutrients implements Parcelable {
         this.chocdf = chocdf;
     }
 
-    public Integer getFibtg() {
+    public Double getFibtg() {
         return fibtg;
     }
 
-    public void setFibtg(Integer fibtg) {
+    public void setFibtg(Double fibtg) {
         this.fibtg = fibtg;
     }
 
@@ -78,22 +78,22 @@ public class Nutrients implements Parcelable {
     }
 
     public void readFromParcel(Parcel source) {
-        this.enercKcal = (Integer) source.readValue(Integer.class.getClassLoader());
+        this.enercKcal = (Double) source.readValue(Double.class.getClassLoader());
         this.procnt = (Double) source.readValue(Double.class.getClassLoader());
         this.fat = (Double) source.readValue(Double.class.getClassLoader());
         this.chocdf = (Double) source.readValue(Double.class.getClassLoader());
-        this.fibtg = (Integer) source.readValue(Integer.class.getClassLoader());
+        this.fibtg = (Double) source.readValue(Double.class.getClassLoader());
     }
 
     public Nutrients() {
     }
 
     protected Nutrients(Parcel in) {
-        this.enercKcal = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.enercKcal = (Double) in.readValue(Double.class.getClassLoader());
         this.procnt = (Double) in.readValue(Double.class.getClassLoader());
         this.fat = (Double) in.readValue(Double.class.getClassLoader());
         this.chocdf = (Double) in.readValue(Double.class.getClassLoader());
-        this.fibtg = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.fibtg = (Double) in.readValue(Double.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Nutrients> CREATOR = new Parcelable.Creator<Nutrients>() {

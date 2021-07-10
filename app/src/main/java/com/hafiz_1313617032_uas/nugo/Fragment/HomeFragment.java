@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
                 Log.d(TAG, "onResponse: Response Body = " + response.body());
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, response.body());
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, response.body());
                 actvSearchFood.setAdapter(adapter);
             }
 
