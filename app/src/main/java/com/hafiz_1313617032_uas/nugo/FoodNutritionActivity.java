@@ -24,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FoodNutritionActivity extends AppCompatActivity {
+public class FoodNutritionActivity extends AppCompatActivity implements HintAdapter.OnHintListener {
     private static final String TAG = "FoodNutritionActivity";
 
     private ApiInterface apiInterface;
@@ -87,7 +87,7 @@ public class FoodNutritionActivity extends AppCompatActivity {
                 tvFoodCategory.setText(responsBody.getParsed().get(0).getFood().getCategory());
 
                 listFoodHint = responsBody.getHints();
-                hintAdapter = new HintAdapter(listFoodHint);
+                hintAdapter = new HintAdapter(listFoodHint, foodNutritionActivity);
                 recyclerView.setAdapter(hintAdapter);
             }
 
@@ -96,5 +96,12 @@ public class FoodNutritionActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure: Response Failed = " + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onHintClick(int position) {
+        Intent intent = new Intent(this, FoodNutritionActivity.class);
+        intent.putExtra("FoodName", listFoodHint.get(position).getFood().getLabel());
+        startActivity(intent);
     }
 }

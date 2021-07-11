@@ -18,25 +18,23 @@ import java.util.List;
 public class HintAdapter extends RecyclerView.Adapter<HintAdapter.ListViewHolder> {
 
     List<Hint> listFoodHint;
+    private OnHintListener onHintListener;
 
-    public HintAdapter(List<Hint> listFoodHint) {
+    public HintAdapter(List<Hint> listFoodHint, OnHintListener onHintListener) {
         this.listFoodHint = listFoodHint;
+        this.onHintListener = onHintListener;
     }
 
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_hint, parent, false);
-        HintAdapter.ListViewHolder listViewHolder = new HintAdapter.ListViewHolder(view);
+        ListViewHolder listViewHolder = new ListViewHolder(view, onHintListener);
         return listViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HintAdapter.ListViewHolder holder, int position) {
-
-        if (position == 0) {
-
-        }
+    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
         String imageUrl = listFoodHint.get(position).getFood().getImage();
         if (imageUrl != null) {
             Picasso.get().load(imageUrl).into(holder.ivHintImage);
@@ -51,15 +49,29 @@ public class HintAdapter extends RecyclerView.Adapter<HintAdapter.ListViewHolder
         return listFoodHint.size();
     }
 
-    public class ListViewHolder extends RecyclerView.ViewHolder {
+    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView ivHintImage;
         public TextView tvHintName;
-        public ListViewHolder(@NonNull View itemView) {
+        OnHintListener onHintListener;
+
+        public ListViewHolder(@NonNull View itemView, OnHintListener onHintListener) {
             super(itemView);
 
             ivHintImage = (ImageView) itemView.findViewById(R.id.iv_hint_image);
             tvHintName = itemView.findViewById(R.id.tv_hint_name);
+            this.onHintListener = onHintListener;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onHintListener.onHintClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnHintListener {
+        void onHintClick(int position);
     }
 }
