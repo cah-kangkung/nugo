@@ -17,7 +17,6 @@ import com.hafiz_1313617032_uas.nugo.REST.ApiClient;
 import com.hafiz_1313617032_uas.nugo.REST.ApiInterface;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;

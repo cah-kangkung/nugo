@@ -16,12 +16,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.hafiz_1313617032_uas.nugo.FoodNutritionActivity;
-import com.hafiz_1313617032_uas.nugo.MainActivity;
-import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.FoodNutrition;
 import com.hafiz_1313617032_uas.nugo.R;
 import com.hafiz_1313617032_uas.nugo.REST.ApiClient;
 import com.hafiz_1313617032_uas.nugo.REST.ApiInterface;
@@ -38,6 +35,7 @@ public class HomeFragment extends Fragment {
     
     private AutoCompleteTextView actvSearchFood;
     private ImageView ivButtonSearch;
+
     private ApiInterface apiInterface;
 
     private int limitSearch = 5;
