@@ -1,11 +1,15 @@
 package com.hafiz_1313617032_uas.nugo.Model.DailyRecipe;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Parcelable {
     @SerializedName("uri")
     @Expose
     private String uri;
@@ -204,4 +208,90 @@ public class Recipe {
     public void setDishType(List<String> dishType) {
         this.dishType = dishType;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.uri);
+        dest.writeString(this.label);
+        dest.writeString(this.image);
+        dest.writeString(this.source);
+        dest.writeString(this.url);
+        dest.writeString(this.shareAs);
+        dest.writeValue(this.yield);
+        dest.writeStringList(this.dietLabels);
+        dest.writeStringList(this.healthLabels);
+        dest.writeStringList(this.cautions);
+        dest.writeStringList(this.ingredientLines);
+        dest.writeList(this.ingredients);
+        dest.writeValue(this.calories);
+        dest.writeValue(this.totalWeight);
+        dest.writeValue(this.totalTime);
+        dest.writeStringList(this.cuisineType);
+        dest.writeStringList(this.mealType);
+        dest.writeStringList(this.dishType);
+    }
+
+    public void readFromParcel(Parcel source) {
+        this.uri = source.readString();
+        this.label = source.readString();
+        this.image = source.readString();
+        this.source = source.readString();
+        this.url = source.readString();
+        this.shareAs = source.readString();
+        this.yield = (Integer) source.readValue(Integer.class.getClassLoader());
+        this.dietLabels = source.createStringArrayList();
+        this.healthLabels = source.createStringArrayList();
+        this.cautions = source.createStringArrayList();
+        this.ingredientLines = source.createStringArrayList();
+        this.ingredients = new ArrayList<Ingredient>();
+        source.readList(this.ingredients, Ingredient.class.getClassLoader());
+        this.calories = (Double) source.readValue(Double.class.getClassLoader());
+        this.totalWeight = (Double) source.readValue(Double.class.getClassLoader());
+        this.totalTime = (Integer) source.readValue(Integer.class.getClassLoader());
+        this.cuisineType = source.createStringArrayList();
+        this.mealType = source.createStringArrayList();
+        this.dishType = source.createStringArrayList();
+    }
+
+    public Recipe() {
+    }
+
+    protected Recipe(Parcel in) {
+        this.uri = in.readString();
+        this.label = in.readString();
+        this.image = in.readString();
+        this.source = in.readString();
+        this.url = in.readString();
+        this.shareAs = in.readString();
+        this.yield = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.dietLabels = in.createStringArrayList();
+        this.healthLabels = in.createStringArrayList();
+        this.cautions = in.createStringArrayList();
+        this.ingredientLines = in.createStringArrayList();
+        this.ingredients = new ArrayList<Ingredient>();
+        in.readList(this.ingredients, Ingredient.class.getClassLoader());
+        this.calories = (Double) in.readValue(Double.class.getClassLoader());
+        this.totalWeight = (Double) in.readValue(Double.class.getClassLoader());
+        this.totalTime = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.cuisineType = in.createStringArrayList();
+        this.mealType = in.createStringArrayList();
+        this.dishType = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe(source);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 }

@@ -24,16 +24,18 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ListViewHo
     private static final String TAG = "RecipeAdapter";
 
     List<Hit> listHit;
+    private OnRecipeListener onRecipeListener;
 
-    public RecipeAdapter(List<Hit> listRecipe) {
-        this.listHit = listRecipe;
+    public RecipeAdapter(List<Hit> listHit, OnRecipeListener onRecipeListener) {
+        this.listHit = listHit;
+        this.onRecipeListener = onRecipeListener;
     }
 
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_recipe, parent, false);
-        RecipeAdapter.ListViewHolder listViewHolder = new RecipeAdapter.ListViewHolder(view);
+        RecipeAdapter.ListViewHolder listViewHolder = new RecipeAdapter.ListViewHolder(view, onRecipeListener);
         return listViewHolder;
     }
 
@@ -54,17 +56,30 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ListViewHo
         return listHit.size();
     }
 
-    public class ListViewHolder extends RecyclerView.ViewHolder {
+    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView ivRecipeImage;
         private TextView tvRecipeName, tvRecipeCalorie, tvRecipeTime;
+        OnRecipeListener onRecipeListener;
 
-        public ListViewHolder(@NonNull View itemView) {
+        public ListViewHolder(@NonNull View itemView, OnRecipeListener onRecipeListener) {
             super(itemView);
             ivRecipeImage = (ImageView) itemView.findViewById(R.id.iv_recipe_image);
             tvRecipeName = itemView.findViewById(R.id.tv_recipe_name);
             tvRecipeCalorie = itemView.findViewById(R.id.tv_recipe_calorie);
             tvRecipeTime = itemView.findViewById(R.id.tv_recipe_time);
+            this.onRecipeListener = onRecipeListener;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onRecipeListener.onRecipeClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnRecipeListener {
+        void onRecipeClick(int position);
     }
 }

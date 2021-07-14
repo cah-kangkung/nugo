@@ -1,5 +1,6 @@
 package com.hafiz_1313617032_uas.nugo.Fragment;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 
@@ -26,12 +27,14 @@ import android.widget.TextView;
 import com.hafiz_1313617032_uas.nugo.Adapter.HintAdapter;
 import com.hafiz_1313617032_uas.nugo.Adapter.RecipeAdapter;
 import com.hafiz_1313617032_uas.nugo.FoodNutritionActivity;
+import com.hafiz_1313617032_uas.nugo.MainActivity;
 import com.hafiz_1313617032_uas.nugo.Model.DailyRecipe.DailyRecipe;
 import com.hafiz_1313617032_uas.nugo.Model.DailyRecipe.Hit;
 import com.hafiz_1313617032_uas.nugo.Model.DailyRecipe.Recipe;
 import com.hafiz_1313617032_uas.nugo.R;
 import com.hafiz_1313617032_uas.nugo.REST.ApiClient;
 import com.hafiz_1313617032_uas.nugo.REST.ApiInterface;
+import com.hafiz_1313617032_uas.nugo.RecipeDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,7 @@ import retrofit2.Response;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
-public class DailyRecipeFragment extends Fragment {
+public class DailyRecipeFragment extends Fragment implements RecipeAdapter.OnRecipeListener {
     private static final String TAG = "DailyRecipeFragment";
 
     private ApiInterface apiInterface;
@@ -64,6 +67,8 @@ public class DailyRecipeFragment extends Fragment {
     private String nextRecipeUrl;
 
     private List<Hit> listRecipe;
+
+    public static DailyRecipeFragment dailyRecipeFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,6 +134,7 @@ public class DailyRecipeFragment extends Fragment {
 
         // initiate apiInterface
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        dailyRecipeFragment = this;
 
         // initiate recyclerview
         recyclerView = view.findViewById(R.id.rv_recipe);
@@ -170,7 +176,7 @@ public class DailyRecipeFragment extends Fragment {
                 listRecipe = response.body().getHits();
                 nextRecipeUrl = response.body().getLink().getNext().getHref();
                 // Log.d(TAG, "onResponse: next link = " + nextRecipeUrl);
-                recipeAdapter = new RecipeAdapter(listRecipe);
+                recipeAdapter = new RecipeAdapter(listRecipe, dailyRecipeFragment);
                 recyclerView.setAdapter(recipeAdapter);
                 recipeAdapter.notifyDataSetChanged();
             }
@@ -205,4 +211,10 @@ public class DailyRecipeFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onRecipeClick(int position) {
+        Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+        intent.putExtra("Recipe", listRecipe.get(position).getRecipe());
+        startActivity(intent);
+    }
 }
