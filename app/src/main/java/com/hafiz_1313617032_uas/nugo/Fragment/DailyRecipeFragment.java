@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -36,6 +39,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static androidx.core.content.ContextCompat.getSystemService;
 
 public class DailyRecipeFragment extends Fragment {
     private static final String TAG = "DailyRecipeFragment";
@@ -96,7 +101,29 @@ public class DailyRecipeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: " + etSearchRecipe.getText());
-                getDailyRecipeSearch(etSearchRecipe.getText().toString(), "1+");
+                etSearchRecipe.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                getDailyRecipe(etSearchRecipe.getText().toString(), "1+");
+            }
+        });
+
+        // listen to enter button click
+        etSearchRecipe.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            etSearchRecipe.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                            getDailyRecipe(etSearchRecipe.getText().toString(), "1+");
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
             }
         });
 
@@ -133,7 +160,6 @@ public class DailyRecipeFragment extends Fragment {
         });
 
         getDailyRecipe("", "1+");
-        getMealType();
     }
 
     private void getDailyRecipe(String q, String ingr) {
@@ -146,24 +172,6 @@ public class DailyRecipeFragment extends Fragment {
                 // Log.d(TAG, "onResponse: next link = " + nextRecipeUrl);
                 recipeAdapter = new RecipeAdapter(listRecipe);
                 recyclerView.setAdapter(recipeAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<DailyRecipe> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        });
-    }
-
-    private void getDailyRecipeSearch(String q, String ingr) {
-        Call<DailyRecipe> call = apiInterface.getDailyRecipe(q, ingr);
-        call.enqueue(new Callback<DailyRecipe>() {
-            @Override
-            public void onResponse(Call<DailyRecipe> call, Response<DailyRecipe> response) {
-                listRecipe = null;
-                listRecipe = response.body().getHits();
-                nextRecipeUrl = response.body().getLink().getNext().getHref();
-
                 recipeAdapter.notifyDataSetChanged();
             }
 
@@ -197,12 +205,4 @@ public class DailyRecipeFragment extends Fragment {
         });
     }
 
-    private void getMealType() {
-        List<String> mealTypes = new ArrayList<>();
-        mealTypes.add("Breakfast");
-        mealTypes.add("Dinner");
-        mealTypes.add("Lunch");
-        mealTypes.add("Snack");
-        mealTypes.add("Teatime");
-    }
 }
