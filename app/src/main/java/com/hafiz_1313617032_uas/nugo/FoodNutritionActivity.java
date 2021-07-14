@@ -30,7 +30,7 @@ public class FoodNutritionActivity extends AppCompatActivity implements HintAdap
 
     // Layout Variable
     private TextView tvFoodName, tvFoodEnergy, tvFoodProtein, tvFoodFat, tvFoodCarbs, tvFoodCategory;
-    private ImageView ivFoodImage;
+    private ImageView ivFoodImage, ivBackButton;
 
     // recycler view
     private RecyclerView recyclerView;
