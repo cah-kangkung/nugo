@@ -3,6 +3,7 @@ package com.hafiz_1313617032_uas.nugo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,49 +16,47 @@ import com.hafiz_1313617032_uas.nugo.Fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    final Fragment fragment1 = new HomeFragment();
+    final Fragment fragment2 = new CalculatorFragment();
+    final Fragment fragment3 = new DailyRecipeFragment();
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = fragment1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //loading the default fragment
-        loadFragment(new HomeFragment());
+        // commit fragment to fm
+        fm.beginTransaction().add(R.id.fragment_container, fragment3, "3").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.fragment_container, fragment2, "2").hide(fragment2).commit();
+        fm.beginTransaction().add(R.id.fragment_container,fragment1, "1").commit();
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(this);
     }
 
-    private boolean loadFragment(Fragment fragment) {
-        //switching fragment
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment fragment = null;
 
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                fragment = new HomeFragment();
-                break;
+                fm.beginTransaction().hide(active).show(fragment1).commit();
+                active = fragment1;
+                return true;
 
             case R.id.navigation_calorie_calculator:
-                fragment = new CalculatorFragment();
-                break;
+                fm.beginTransaction().hide(active).show(fragment2).commit();
+                active = fragment2;
+                return true;
 
             case R.id.navigation_daily_recipe:
-                fragment = new DailyRecipeFragment();
-                break;
+                fm.beginTransaction().hide(active).show(fragment3).commit();
+                active = fragment3;
+                return true;
         }
 
-        return loadFragment(fragment);
+        return false;
     }
 }
