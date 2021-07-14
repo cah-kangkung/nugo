@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hafiz_1313617032_uas.nugo.Adapter.HintAdapter;
@@ -45,11 +46,17 @@ public class DailyRecipeFragment extends Fragment {
     private TextView tvPageName;
     private ImageView ivSearchButton01, ivSearchButton02;
     private EditText etSearchRecipe;
+    private ProgressBar infiniteScrollLoading;
 
     // recycler view
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager layoutManager;
     private RecipeAdapter recipeAdapter;
+
+    // class variable
+    private boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private String nextRecipeUrl;
 
     private List<Hit> listRecipe;
 
@@ -69,6 +76,9 @@ public class DailyRecipeFragment extends Fragment {
         ivSearchButton01 = view.findViewById(R.id.iv_search_button01);
         ivSearchButton02 = view.findViewById(R.id.iv_search_button02);
         etSearchRecipe = view.findViewById(R.id.et_search_recipe);
+        infiniteScrollLoading = view.findViewById(R.id.infinite_loading);
+
+        infiniteScrollLoading.setVisibility(View.GONE);
 
         // listen to text changed
         ivSearchButton01.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +91,15 @@ public class DailyRecipeFragment extends Fragment {
             }
         });
 
+        // listen to recipe search button click
+        ivSearchButton02.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: " + etSearchRecipe.getText());
+                getDailyRecipeSearch(etSearchRecipe.getText().toString(), "1+");
+            }
+        });
+
         // initiate apiInterface
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -89,16 +108,42 @@ public class DailyRecipeFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        getDailyRecipe();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) { //check for scroll down
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Log.d(TAG, "onScrolled: Last Item Wow");
+
+                            infiniteScrollLoading.setVisibility(View.VISIBLE);
+
+                            getDailyRecipeAppend(nextRecipeUrl);
+                        }
+                    }
+                }
+            }
+        });
+
+        getDailyRecipe("", "1+");
+        getMealType();
     }
 
-    private void getDailyRecipe() {
-        Call<DailyRecipe> call = apiInterface.getDailyRecipe();
+    private void getDailyRecipe(String q, String ingr) {
+        Call<DailyRecipe> call = apiInterface.getDailyRecipe(q, ingr);
         call.enqueue(new Callback<DailyRecipe>() {
             @Override
             public void onResponse(Call<DailyRecipe> call, Response<DailyRecipe> response) {
                 listRecipe = response.body().getHits();
-
+                nextRecipeUrl = response.body().getLink().getNext().getHref();
+                // Log.d(TAG, "onResponse: next link = " + nextRecipeUrl);
                 recipeAdapter = new RecipeAdapter(listRecipe);
                 recyclerView.setAdapter(recipeAdapter);
             }
@@ -108,5 +153,56 @@ public class DailyRecipeFragment extends Fragment {
                 Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
+    }
+
+    private void getDailyRecipeSearch(String q, String ingr) {
+        Call<DailyRecipe> call = apiInterface.getDailyRecipe(q, ingr);
+        call.enqueue(new Callback<DailyRecipe>() {
+            @Override
+            public void onResponse(Call<DailyRecipe> call, Response<DailyRecipe> response) {
+                listRecipe = null;
+                listRecipe = response.body().getHits();
+                nextRecipeUrl = response.body().getLink().getNext().getHref();
+
+                recipeAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<DailyRecipe> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void getDailyRecipeAppend(String nextRecipe) {
+        Call<DailyRecipe> call = apiInterface.getDailyRecipeNext(nextRecipe);
+        call.enqueue(new Callback<DailyRecipe>() {
+            @Override
+            public void onResponse(Call<DailyRecipe> call, Response<DailyRecipe> response) {
+                listRecipe.addAll(listRecipe.size()-1, response.body().getHits());
+                nextRecipeUrl = response.body().getLink().getNext().getHref();
+                Log.d(TAG, "onResponse: Next Index = " + response.body().getFrom());
+                Log.d(TAG, "onResponse: Next Url = " + nextRecipeUrl);
+                loading = true;
+
+                recipeAdapter.notifyItemRangeInserted(listRecipe.size()-1, listRecipe.size());
+
+                infiniteScrollLoading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<DailyRecipe> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void getMealType() {
+        List<String> mealTypes = new ArrayList<>();
+        mealTypes.add("Breakfast");
+        mealTypes.add("Dinner");
+        mealTypes.add("Lunch");
+        mealTypes.add("Snack");
+        mealTypes.add("Teatime");
     }
 }

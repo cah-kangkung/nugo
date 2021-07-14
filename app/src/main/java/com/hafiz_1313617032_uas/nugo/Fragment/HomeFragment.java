@@ -102,6 +102,7 @@ public class HomeFragment extends Fragment {
                 Log.d(TAG, "onResponse: Response Body = " + response.body());
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, response.body());
                 actvSearchFood.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
 
             @Override

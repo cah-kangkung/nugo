@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface ApiInterface {
 
@@ -29,6 +30,10 @@ public interface ApiInterface {
     Call<FoodNutrition> getFoodNutrition(@Query("ingr") String ingr);
 
     // endpoint daily recipes
-    @GET("/api/recipes/v2?type=public&app_id=" + RECIPE_APP_ID + "&app_key=" + RECIPE_APP_KEY + "&ingr=1%2B")
-    Call<DailyRecipe> getDailyRecipe();
+    @GET("/api/recipes/v2?type=public&app_id=" + RECIPE_APP_ID + "&app_key=" + RECIPE_APP_KEY)
+    Call<DailyRecipe> getDailyRecipe(@Query("q") String q, @Query("ingr") String ingr);
+
+    // endpoint daily recipes pagination
+    @GET
+    Call<DailyRecipe> getDailyRecipeNext(@Url String url);
 }
