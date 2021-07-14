@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private static final String TAG = "RecipeDetailActivity";
 
     // layout variable
-    private ImageView ivRecipDetailimage;
+    private ImageView ivRecipDetailimage, ivBackButton;
     private TextView tvRecipeDetailName, tvRecipeDetailCookingTime, tvRecipeDetailYield, tvRecipeDetailCalories;
 
     @Override
@@ -26,6 +27,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         Recipe recipe = getIntent().getParcelableExtra("Recipe");
 
         ivRecipDetailimage = findViewById(R.id.iv_recipe_detail_image);
+        ivBackButton = findViewById(R.id.back_button);
         tvRecipeDetailName = findViewById(R.id.tv_recipe_detail_name);
         tvRecipeDetailCookingTime =findViewById(R.id.tv_recipe_detail_cookingTime);
         tvRecipeDetailYield = findViewById(R.id.tv_recipe_detail_cookingYield);
@@ -36,5 +38,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
         tvRecipeDetailCookingTime.setText(Integer.toString(recipe.getTotalTime()));
         tvRecipeDetailYield.setText(Integer.toString(recipe.getYield()));
         tvRecipeDetailCalories.setText(Integer.toString(recipe.getCalories().intValue()));
+
+    }
+
+    public void click(View v) {
+        switch(v.getId()) {
+            case R.id.back_button:
+                Log.d(TAG, "click: Top back button");
+                finish();
+        }
     }
 }

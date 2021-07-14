@@ -173,12 +173,14 @@ public class DailyRecipeFragment extends Fragment implements RecipeAdapter.OnRec
         call.enqueue(new Callback<DailyRecipe>() {
             @Override
             public void onResponse(Call<DailyRecipe> call, Response<DailyRecipe> response) {
-                listRecipe = response.body().getHits();
-                nextRecipeUrl = response.body().getLink().getNext().getHref();
-                // Log.d(TAG, "onResponse: next link = " + nextRecipeUrl);
-                recipeAdapter = new RecipeAdapter(listRecipe, dailyRecipeFragment);
-                recyclerView.setAdapter(recipeAdapter);
-                recipeAdapter.notifyDataSetChanged();
+                if (response.isSuccessful() && response.body().getHits().size() != 0) {
+                    listRecipe = response.body().getHits();
+                    nextRecipeUrl = response.body().getLink().getNext().getHref();
+                    // Log.d(TAG, "onResponse: next link = " + nextRecipeUrl);
+                    recipeAdapter = new RecipeAdapter(listRecipe, dailyRecipeFragment);
+                    recyclerView.setAdapter(recipeAdapter);
+                    recipeAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -193,15 +195,17 @@ public class DailyRecipeFragment extends Fragment implements RecipeAdapter.OnRec
         call.enqueue(new Callback<DailyRecipe>() {
             @Override
             public void onResponse(Call<DailyRecipe> call, Response<DailyRecipe> response) {
-                listRecipe.addAll(listRecipe.size()-1, response.body().getHits());
-                nextRecipeUrl = response.body().getLink().getNext().getHref();
-                Log.d(TAG, "onResponse: Next Index = " + response.body().getFrom());
-                Log.d(TAG, "onResponse: Next Url = " + nextRecipeUrl);
-                loading = true;
+                if (response.isSuccessful() && response.body().getHits().size() != 0) {
+                    listRecipe.addAll(listRecipe.size()-1, response.body().getHits());
+                    nextRecipeUrl = response.body().getLink().getNext().getHref();
+                    Log.d(TAG, "onResponse: Next Index = " + response.body().getFrom());
+                    Log.d(TAG, "onResponse: Next Url = " + nextRecipeUrl);
+                    loading = true;
 
-                recipeAdapter.notifyItemRangeInserted(listRecipe.size()-1, listRecipe.size());
+                    recipeAdapter.notifyItemRangeInserted(listRecipe.size()-1, listRecipe.size());
 
-                infiniteScrollLoading.setVisibility(View.GONE);
+                    infiniteScrollLoading.setVisibility(View.GONE);
+                }
             }
 
             @Override
