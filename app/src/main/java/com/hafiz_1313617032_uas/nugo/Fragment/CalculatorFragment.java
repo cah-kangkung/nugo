@@ -1,5 +1,6 @@
 package com.hafiz_1313617032_uas.nugo.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EdgeEffect;
 import android.widget.EditText;
@@ -31,7 +33,7 @@ public class CalculatorFragment extends Fragment {
     private RadioGroup rgGender;
     private Spinner spActivity;
     private Button btnCalculate;
-    private TextView tvMaintain;
+    private TextView tvMaintain, tvMildLoss, tvWeightLoss, tvExtremeLoss, tvMildGain, tvWeightGain, tvFastGain;
     private ConstraintLayout constraintLayout;
 
     @Override
@@ -57,6 +59,12 @@ public class CalculatorFragment extends Fragment {
         btnCalculate = view.findViewById(R.id.btn_calculate);
         spActivity = view.findViewById(R.id.sp_activity);
         tvMaintain = view.findViewById(R.id.tv_maintain);
+        tvMildLoss = view.findViewById(R.id.tv_mild_lost);
+        tvWeightLoss = view.findViewById(R.id.tv_weight_lost);
+        tvExtremeLoss = view.findViewById(R.id.tv_extreme_lost);
+        tvMildGain = view.findViewById(R.id.tv_mild_gain);
+        tvWeightGain = view.findViewById(R.id.tv_weight_gain);
+        tvFastGain = view.findViewById(R.id.tv_fast_gain);
         constraintLayout = view.findViewById(R.id.cl_calories_intake);
     }
 
@@ -81,8 +89,22 @@ public class CalculatorFragment extends Fragment {
                 int calories = (int) Math.round(bmr);
 
                 tvMaintain.setText(calories + " cal/day");
+                tvMildLoss.setText(calories + " cal/day");
+                tvWeightLoss.setText(calories + " cal/day");
+                tvExtremeLoss.setText(calories + " cal/day");
+                tvMildGain.setText(calories + " cal/day");
+                tvWeightGain.setText(calories + " cal/day");
+                tvFastGain.setText(calories + " cal/day");
 
                 constraintLayout.setVisibility(View.VISIBLE);
+
+                // hide keyboard after button click
+                try {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    Log.d(TAG, "onClick: " + e.getMessage());
+                }
 
                 /* Log.d(TAG, "onViewCreated: " + age);
                 Log.d(TAG, "onViewCreated: " + height);
@@ -119,7 +141,5 @@ public class CalculatorFragment extends Fragment {
 
         return bmr;
     }
-
-
 
 }
