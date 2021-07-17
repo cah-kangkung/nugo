@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +12,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hafiz_1313617032_uas.nugo.DatabaseContract.BasketContract;
 import com.hafiz_1313617032_uas.nugo.DatabaseHelper.BasketDatabaseHelper;
+import com.hafiz_1313617032_uas.nugo.DatabaseContract.BasketContract.BasketEntry;
+import com.hafiz_1313617032_uas.nugo.Model.Basket.Basket;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.Food;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.FoodNutrition;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.Hint;
@@ -32,6 +36,8 @@ public class FoodNutritionActivity extends AppCompatActivity {
 
     private ApiInterface apiInterface;
 
+    BasketDatabaseHelper basketDatabaseHelper;
+
     // Layout Variable
     private TextView tvFoodName, tvFoodEnergy, tvFoodProtein, tvFoodFat, tvFoodCarbs, tvFoodCategory;
     private ImageView ivFoodImage;
@@ -42,6 +48,8 @@ public class FoodNutritionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_nutrition);
+
+         basketDatabaseHelper = new BasketDatabaseHelper(this);
 
         initVariable();
 
@@ -76,9 +84,28 @@ public class FoodNutritionActivity extends AppCompatActivity {
     }
 
     private void addToBasket() {
-        BasketDatabaseHelper basketDatabaseHelper = new BasketDatabaseHelper(this);
 
-        basketDatabaseHelper.createBasketItem(food);
+        // get basket item by name
+        String selection = BasketEntry.COLUMN_NAME_FOOD_NAME + " = ?";
+        String[] selectionArgs = {food.getLabel()};
+        Basket basketItem = basketDatabaseHelper.readBasketItem(selection, selectionArgs, null);
+
+        Log.d(TAG, "addToBasket: Basket Item = " + basketItem);
+
+        if (basketItem == null) {
+            long result = basketDatabaseHelper.createBasketItem(food);
+            Log.d(TAG, "addToBasket: Create Result = " + result);
+        } else {
+            // create values to update
+            ContentValues values = new ContentValues();
+            values.put(BasketEntry.COLUMN_NAME_FOOD_COUNT, basketItem.getFood_count() + 1);
+
+            // udpate by name
+            String whereClause = BasketEntry.COLUMN_NAME_FOOD_NAME + " = ?";
+            String[] whereArgs = {food.getLabel()};
+            int rowsAffected = basketDatabaseHelper.updateBasketItem(values, whereClause, whereArgs);
+            Log.d(TAG, "addToBasket: Rows Affected = " + rowsAffected);
+        }
     }
 
     public void click(View v) {
@@ -87,6 +114,7 @@ public class FoodNutritionActivity extends AppCompatActivity {
                 Log.d(TAG, "click: Top back button");
                 finish();
             case R.id.button_add_to_basket:
+                Log.d(TAG, "click: Add to Basket");
                 addToBasket();
         }
     }

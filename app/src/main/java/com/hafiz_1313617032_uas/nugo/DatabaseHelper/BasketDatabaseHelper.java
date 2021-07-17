@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.hafiz_1313617032_uas.nugo.DatabaseContract.BasketContract.BasketEntry;
 import com.hafiz_1313617032_uas.nugo.Model.Basket.Basket;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BasketDatabaseHelper extends SQLiteOpenHelper {
+
+    private static final String TAG = "BasketDatabaseHelper";
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "FeedReader.db";
@@ -55,6 +58,11 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    /**
+     *
+     * @param food  Object food
+     * @return      the row ID of the newly inserted row, or -1 if an error occurred
+     */
     public long createBasketItem(Food food) {
         // Gets the data repository in write mode
         SQLiteDatabase db = getWritableDatabase();
@@ -76,24 +84,32 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      *
-     * @param columns       The array of columns to return (pass null to get all)
-     * @param selection     The columns for the WHERE clause
-     * @param selectionArgs The values for the WHERE clause
+     * @param selection     A filter declaring which rows to return, formatted as an SQL WHERE clause (excluding the WHERE itself). Passing null will return all rows for the given table
+     * @param selectionArgs You may include ?s in selection, which will be replaced by the values from selectionArgs, in order that they appear in the selection. The values will be bound as Strings.
      * @param sortOrder     The sort order
-     * @return
+     * @return              Basket object, return null if there are no item that match the parameter
      */
-    public Basket readBasketItem(String[] columns, String selection, String[] selectionArgs, String sortOrder) {
+    public Basket readBasketItem(String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.query(
                 BasketEntry.TABLE_NAME, // The table to query
-                columns,                // The array of columns to return (pass null to get all)
+                null,            // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
                 null,            // don't group the rows
                 null,             // don't filter by row groups
                 sortOrder               // The sort order
         );
+
+        Log.d(TAG, "readBasketItem: Cursor = " + cursor);
+        Log.d(TAG, "readBasketItem: Cursor Count = " + cursor.getCount());
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+        } else {
+            return null;
+        }
 
         Basket basket = new Basket();
         basket.setFood_name(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_NAME)));
@@ -104,23 +120,23 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         basket.setFood_image(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_IMAGE)));
         basket.setFood_count(cursor.getInt(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_COUNT)));
 
+        cursor.close();
         return basket;
     }
 
     /**
      *
-     * @param columns       The array of columns to return (pass null to get all)
-     * @param selection     The columns for the WHERE clause
-     * @param selectionArgs The values for the WHERE clause
+     * @param selection     A filter declaring which rows to return, formatted as an SQL WHERE clause (excluding the WHERE itself). Passing null will return all rows for the given table
+     * @param selectionArgs You may include ?s in selection, which will be replaced by the values from selectionArgs, in order that they appear in the selection. The values will be bound as Strings.
      * @param sortOrder     The sort order
-     * @return
+     * @return              List<Basket>, if there are no item that match the parameter, return null
      */
-    public List<Basket> readAllBasketItems(String[] columns, String selection, String[] selectionArgs, String sortOrder) {
+    public List<Basket> readAllBasketItems(String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.query(
-                BasketEntry.TABLE_NAME,      // The table to query
-                columns,                // The array of columns to return (pass null to get all)
+                BasketEntry.TABLE_NAME, // The table to query
+                null,            // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
                 null,            // don't group the rows
@@ -129,17 +145,49 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         );
 
         List<Basket> basketItems = new ArrayList<>();
-        while(cursor.moveToNext()) {
-            Basket basket = new Basket();
-            basketItems.add(basket);
+        if (cursor.getCount() != 0) {
+            while(cursor.moveToNext()) {
+                Basket basket = new Basket();
+                basket.setFood_name(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_NAME)));
+                basket.setFood_energy(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_ENERGY)));
+                basket.setFood_protein(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_PROTEIN)));
+                basket.setFood_fat(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_FAT)));
+                basket.setFood_carbo(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_CARBO)));
+                basket.setFood_image(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_IMAGE)));
+                basket.setFood_count(cursor.getInt(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_COUNT)));
+                basketItems.add(basket);
+            }
+            cursor.close();
+        } else {
+            return null;
         }
+
         return basketItems;
     }
 
     /**
      *
-     * @param selection     Define 'where' part of query.
-     * @param selectionArgs Specify arguments in placeholder order.
+     * @param values        a map from column names to new column values. null is a valid value that will be translated to NULL.
+     * @param whereClause   the optional WHERE clause to apply when updating. Passing null will update all rows.
+     * @param whereArgs     You may include ?s in the where clause, which will be replaced by the values from whereArgs. The values will be bound as Strings.
+     * @return              the number of rows affected
+     */
+    public int updateBasketItem(ContentValues values, String whereClause, String[] whereArgs) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        int count = db.update(
+                BasketEntry.TABLE_NAME,
+                values,
+                whereClause,
+                whereArgs);
+
+        return count;
+    }
+
+    /**
+     *
+     * @param selection     the optional WHERE clause to apply when deleting. Passing null will delete all rows.
+     * @param selectionArgs You may include ?s in the where clause, which will be replaced by the values from whereArgs. The values will be bound as Strings.
      * @return
      */
     public int deleteBasketItem(String selection, String[] selectionArgs) {

@@ -18,13 +18,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
+import com.hafiz_1313617032_uas.nugo.DatabaseHelper.BasketDatabaseHelper;
 import com.hafiz_1313617032_uas.nugo.FoodNutritionActivity;
+import com.hafiz_1313617032_uas.nugo.Model.Basket.Basket;
 import com.hafiz_1313617032_uas.nugo.R;
 import com.hafiz_1313617032_uas.nugo.REST.ApiClient;
 import com.hafiz_1313617032_uas.nugo.REST.ApiInterface;
 import com.hafiz_1313617032_uas.nugo.SearchFoodActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +57,11 @@ public class HomeFragment extends Fragment {
 
         // initiate apiInterface
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        BasketDatabaseHelper basketDatabaseHelper = new BasketDatabaseHelper(getActivity());
+
+        List<Basket> basketItems = basketDatabaseHelper.readAllBasketItems(null, null, null);
+        Log.d(TAG, "onViewCreated: " + basketItems);
 
         // search bar
         actvSearchFood = (AutoCompleteTextView) view.findViewById(R.id.autocomplete_search_food);
