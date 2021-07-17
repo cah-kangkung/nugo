@@ -53,7 +53,7 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public long addBasket(Food food) {
+    public long createBasketItem(Food food) {
         // Gets the data repository in write mode
         SQLiteDatabase db = getWritableDatabase();
 
@@ -71,7 +71,15 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    public List<Food> getAllBasket(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    /**
+     *
+     * @param projection The array of columns to return (pass null to get all)
+     * @param selection The columns for the WHERE clause
+     * @param selectionArgs The values for the WHERE clause
+     * @param sortOrder The sort order
+     * @return
+     */
+    public List<Food> readBasketItem(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.query(
@@ -85,6 +93,7 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         );
 
         List<Food> food = new ArrayList<>();
+
 
         return food;
     }

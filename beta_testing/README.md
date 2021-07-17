@@ -2,7 +2,7 @@
 
 ## Date
 
-Thursday, 15 July 2021
+Thursday, 17 July 2021
 
 ## Tester
 
@@ -17,4 +17,4 @@ The reason why our beta tester is the proper user segment is because, right now 
 
 ## Video
 
-Youtube: [Link]()
+Youtube: [Link](https://youtu.be/Kon7DC_leuQ)
