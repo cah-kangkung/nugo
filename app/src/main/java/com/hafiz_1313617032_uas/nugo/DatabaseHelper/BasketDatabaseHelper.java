@@ -74,11 +74,19 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    /**
+     *
+     * @param columns       The array of columns to return (pass null to get all)
+     * @param selection     The columns for the WHERE clause
+     * @param selectionArgs The values for the WHERE clause
+     * @param sortOrder     The sort order
+     * @return
+     */
     public Basket readBasketItem(String[] columns, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.query(
-                BasketEntry.TABLE_NAME,      // The table to query
+                BasketEntry.TABLE_NAME, // The table to query
                 columns,                // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
@@ -87,7 +95,16 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
                 sortOrder               // The sort order
         );
 
-        
+        Basket basket = new Basket();
+        basket.setFood_name(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_NAME)));
+        basket.setFood_energy(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_ENERGY)));
+        basket.setFood_protein(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_PROTEIN)));
+        basket.setFood_fat(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_FAT)));
+        basket.setFood_carbo(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_CARBO)));
+        basket.setFood_image(cursor.getString(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_IMAGE)));
+        basket.setFood_count(cursor.getInt(cursor.getColumnIndex(BasketEntry.COLUMN_NAME_FOOD_COUNT)));
+
+        return basket;
     }
 
     /**
@@ -132,4 +149,6 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         int deletedRows = db.delete(BasketEntry.TABLE_NAME, selection, selectionArgs);
         return deletedRows;
     }
+
+
 }
