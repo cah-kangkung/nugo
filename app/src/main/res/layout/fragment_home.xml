@@ -4,14 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:padding="32dp">
+    android:animateLayoutChanges="true">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/baseline_menu_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#C3BDBD" />
+
+    <ImageView
+        android:id="@+id/button_basket"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="40dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/outline_shopping_basket_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView2"
+        app:tint="#FFC3BDBD" />
+
+    <TextView
+        android:id="@+id/tv_basket_item_count"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/basket_label"
+        android:gravity="center"
+        android:translationX="-10dp"
+        android:translationY="-12dp"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="12dp"
+        app:layout_constraintStart_toEndOf="@id/button_basket"
+        app:layout_constraintTop_toTopOf="@+id/button_basket" />
 
     <TextView
         android:id="@+id/tv_welcome_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="60dp"
         android:maxEms="15"
         android:text="@string/welcome_message"
         android:textAlignment="center"
@@ -20,12 +58,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/button_basket" />
 
     <AutoCompleteTextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/autocomplete_search_food"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
         android:layout_marginTop="28dp"
         android:background="@drawable/rounded_search_bar"
         android:completionThreshold="1"

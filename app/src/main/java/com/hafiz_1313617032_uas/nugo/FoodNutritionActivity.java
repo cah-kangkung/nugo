@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hafiz_1313617032_uas.nugo.DatabaseContract.BasketContract;
 import com.hafiz_1313617032_uas.nugo.DatabaseHelper.BasketDatabaseHelper;
@@ -115,6 +116,7 @@ public class FoodNutritionActivity extends AppCompatActivity {
                 finish();
             case R.id.button_add_to_basket:
                 Log.d(TAG, "click: Add to Basket");
+                Toast.makeText(foodNutritionActivity, food.getLabel() + " added to basket", Toast.LENGTH_SHORT).show();
                 addToBasket();
         }
     }

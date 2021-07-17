@@ -198,5 +198,15 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
         return deletedRows;
     }
 
+    public int getBasketItemCount() {
+        String countQuery = "SELECT  * FROM " + BasketEntry.TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+
+        cursor.close();
+        return count;
+    }
+
 
 }

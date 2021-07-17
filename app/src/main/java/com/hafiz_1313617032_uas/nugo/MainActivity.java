@@ -10,13 +10,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.hafiz_1313617032_uas.nugo.DatabaseHelper.BasketDatabaseHelper;
 import com.hafiz_1313617032_uas.nugo.Fragment.CalculatorFragment;
 import com.hafiz_1313617032_uas.nugo.Fragment.DailyRecipeFragment;
 import com.hafiz_1313617032_uas.nugo.Fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "MainActivity";
 
     final Fragment fragment1 = new HomeFragment();
     final Fragment fragment2 = new CalculatorFragment();
@@ -63,4 +67,5 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         return false;
     }
+
 }

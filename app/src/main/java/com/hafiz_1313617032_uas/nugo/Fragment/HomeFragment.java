@@ -17,7 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.hafiz_1313617032_uas.nugo.BasketActivity;
 import com.hafiz_1313617032_uas.nugo.DatabaseHelper.BasketDatabaseHelper;
 import com.hafiz_1313617032_uas.nugo.FoodNutritionActivity;
 import com.hafiz_1313617032_uas.nugo.Model.Basket.Basket;
@@ -38,9 +40,12 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
     
     private AutoCompleteTextView actvSearchFood;
-    private ImageView ivButtonSearch;
+    private ImageView ivButtonSearch, ivButtonBasket;
+    private TextView tvBasketLabel;
 
     private ApiInterface apiInterface;
+
+    View view;
 
     private int limitSearch = 5;
 
@@ -58,14 +63,14 @@ public class HomeFragment extends Fragment {
         // initiate apiInterface
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        BasketDatabaseHelper basketDatabaseHelper = new BasketDatabaseHelper(getActivity());
+        this.view = view;
 
-        List<Basket> basketItems = basketDatabaseHelper.readAllBasketItems(null, null, null);
-        Log.d(TAG, "onViewCreated: " + basketItems);
+        getBasketItemCount(this.view);
 
         // search bar
         actvSearchFood = (AutoCompleteTextView) view.findViewById(R.id.autocomplete_search_food);
         ivButtonSearch = (ImageView) view.findViewById(R.id.iv_button_search);
+        ivButtonBasket = (ImageView) view.findViewById(R.id.button_basket);
         ivButtonSearch.setVisibility(View.GONE);
 
         // listen to text changed
@@ -101,6 +106,22 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        ivButtonBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "click: Basket Menu Clicked");
+                Intent intent = new Intent(getActivity(), BasketActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getBasketItemCount(this.view);
     }
 
     public void getAutoComplete(String q, int limit) {
@@ -121,5 +142,12 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void getBasketItemCount(View view) {
+        // basket label
+        BasketDatabaseHelper basketDatabaseHelper = new BasketDatabaseHelper(getActivity());
+        int count = basketDatabaseHelper.getBasketItemCount();
+        tvBasketLabel = view.findViewById(R.id.tv_basket_item_count);
+        tvBasketLabel.setText(Integer.toString(count));
+    }
 
 }
