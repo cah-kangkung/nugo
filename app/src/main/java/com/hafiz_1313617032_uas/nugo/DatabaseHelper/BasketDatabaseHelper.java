@@ -73,18 +73,18 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
 
     /**
      *
-     * @param projection The array of columns to return (pass null to get all)
-     * @param selection The columns for the WHERE clause
+     * @param columns       The array of columns to return (pass null to get all)
+     * @param selection     The columns for the WHERE clause
      * @param selectionArgs The values for the WHERE clause
-     * @param sortOrder The sort order
+     * @param sortOrder     The sort order
      * @return
      */
-    public List<Food> readBasketItem(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public List<Food> readBasketItem(String[] columns, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.query(
                 Basket.TABLE_NAME,      // The table to query
-                projection,             // The array of columns to return (pass null to get all)
+                columns,                // The array of columns to return (pass null to get all)
                 selection,              // The columns for the WHERE clause
                 selectionArgs,          // The values for the WHERE clause
                 null,            // don't group the rows
@@ -92,9 +92,31 @@ public class BasketDatabaseHelper extends SQLiteOpenHelper {
                 sortOrder               // The sort order
         );
 
-        List<Food> food = new ArrayList<>();
+        List<Food> foods = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            Food food = new Food();
+            food.setLabel(cursor.getString(cursor.getColumnIndex(Basket.COLUMN_NAME_FOOD_NAME)));
+            food.getNutrients().setEnercKcal(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Basket.COLUMN_NAME_FOOD_ENERGY))));
+            food.getNutrients().setProcnt(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Basket.COLUMN_NAME_FOOD_PROTEIN))));
+            food.getNutrients().setFat(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Basket.COLUMN_NAME_FOOD_FAT))));
+            food.getNutrients().setChocdf(Double.parseDouble(cursor.getString(cursor.getColumnIndex(Basket.COLUMN_NAME_FOOD_CARBO))));
+            food.setLabel(cursor.getString(cursor.getColumnIndex(Basket.COLUMN_NAME_FOOD_IMAGE)));
+            foods.add(food);
+        }
+        return foods;
+    }
 
+    /**
+     *
+     * @param selection     Define 'where' part of query.
+     * @param selectionArgs Specify arguments in placeholder order.
+     * @return
+     */
+    public int deleteBasketItem(String selection, String[] selectionArgs) {
+        SQLiteDatabase db = getReadableDatabase();
 
-        return food;
+        // Issue SQL statement.
+        int deletedRows = db.delete(Basket.TABLE_NAME, selection, selectionArgs);
+        return deletedRows;
     }
 }

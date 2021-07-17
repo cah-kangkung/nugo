@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hafiz_1313617032_uas.nugo.DatabaseHelper.BasketDatabaseHelper;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.Food;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.FoodNutrition;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.Hint;
@@ -74,12 +75,19 @@ public class FoodNutritionActivity extends AppCompatActivity {
         foodNutritionActivity = this;
     }
 
+    private void addToBasket() {
+        BasketDatabaseHelper basketDatabaseHelper = new BasketDatabaseHelper(this);
+
+        basketDatabaseHelper.createBasketItem(food);
+    }
 
     public void click(View v) {
         switch(v.getId()) {
             case R.id.back_button:
                 Log.d(TAG, "click: Top back button");
                 finish();
+            case R.id.button_add_to_basket:
+                addToBasket();
         }
     }
 }

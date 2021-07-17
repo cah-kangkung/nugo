@@ -236,11 +236,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/button_add_to_basket"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
+                android:onClick="click"
                 android:text="Add to Basket" />
         </LinearLayout>
 
