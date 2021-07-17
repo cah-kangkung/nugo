@@ -8,7 +8,7 @@ public class BasketContract {
     private BasketContract() {}
 
     /* Inner class that defines the table contents */
-    public static class Basket implements BaseColumns {
+    public static class BasketEntry implements BaseColumns {
         public static final String TABLE_NAME = "basket";
         public static final String COLUMN_NAME_FOOD_NAME = "food_name";
         public static final String COLUMN_NAME_FOOD_ENERGY = "food_energy";
@@ -16,5 +16,6 @@ public class BasketContract {
         public static final String COLUMN_NAME_FOOD_FAT = "food_fat";
         public static final String COLUMN_NAME_FOOD_CARBO = "food_carbo";
         public static final String COLUMN_NAME_FOOD_IMAGE = "food_image";
+        public static final String COLUMN_NAME_FOOD_COUNT = "food_count";
     }
 }
