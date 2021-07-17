@@ -22,6 +22,7 @@ import com.hafiz_1313617032_uas.nugo.FoodNutritionActivity;
 import com.hafiz_1313617032_uas.nugo.R;
 import com.hafiz_1313617032_uas.nugo.REST.ApiClient;
 import com.hafiz_1313617032_uas.nugo.REST.ApiInterface;
+import com.hafiz_1313617032_uas.nugo.SearchFoodActivity;
 
 import java.util.ArrayList;
 
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: Item = " + actvSearchFood.getText().toString());
-                Intent intent = new Intent(getActivity(), FoodNutritionActivity.class);
+                Intent intent = new Intent(getActivity(), SearchFoodActivity.class);
                 intent.putExtra("FoodName", actvSearchFood.getText().toString());
                 startActivity(intent);
             }

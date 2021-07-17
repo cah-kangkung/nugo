@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hafiz_1313617032_uas.nugo.Adapter.HintAdapter;
+import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.Food;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.FoodNutrition;
 import com.hafiz_1313617032_uas.nugo.Model.FoodNutrition.Hint;
 import com.hafiz_1313617032_uas.nugo.REST.ApiClient;
@@ -23,8 +24,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FoodNutritionActivity extends AppCompatActivity implements HintAdapter.OnHintListener {
+public class FoodNutritionActivity extends AppCompatActivity {
     private static final String TAG = "FoodNutritionActivity";
+
+    public static FoodNutritionActivity foodNutritionActivity;
 
     private ApiInterface apiInterface;
 
@@ -32,20 +35,30 @@ public class FoodNutritionActivity extends AppCompatActivity implements HintAdap
     private TextView tvFoodName, tvFoodEnergy, tvFoodProtein, tvFoodFat, tvFoodCarbs, tvFoodCategory;
     private ImageView ivFoodImage;
 
-    // recycler view
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private HintAdapter hintAdapter;
-    public static FoodNutritionActivity foodNutritionActivity;
-
-    private List<Hint> listFoodHint;
-
+    Food food;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_nutrition);
 
+        initVariable();
+
+        // get food data
+        food = getIntent().getParcelableExtra("FoodInfo");
+
+        Log.d(TAG, "label: " + food.getLabel());
+
+        Picasso.get().load(food.getImage()).error(R.drawable.baseline_restaurant_menu_black_24dp).into(ivFoodImage);
+        tvFoodName.setText(food.getLabel());
+        tvFoodEnergy.setText(food.getNutrients().getEnercKcal().intValue() + "kcal");
+        tvFoodProtein.setText((food.getNutrients().getProcnt().intValue())  + "g");
+        tvFoodFat.setText((food.getNutrients().getFat().intValue()) + "g");
+        tvFoodCarbs.setText((food.getNutrients().getChocdf().intValue()) + "g");
+        tvFoodCategory.setText(food.getCategory());
+    }
+
+    private void initVariable() {
         // initiate apiInterface
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -58,49 +71,15 @@ public class FoodNutritionActivity extends AppCompatActivity implements HintAdap
         tvFoodCategory = findViewById(R.id.tv_food_category);
         ivFoodImage = (ImageView) findViewById(R.id.iv_food_image);
 
-        recyclerView = findViewById(R.id.hint_food_list);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         foodNutritionActivity = this;
-
-
-        // get food name from home fragment
-        String ingr = getIntent().getStringExtra("FoodName");
-
-        getFoodNutrition(ingr);
     }
 
-    public void getFoodNutrition(String ingr) {
-        Call<FoodNutrition> call = apiInterface.getFoodNutrition(ingr);
-        call.enqueue(new Callback<FoodNutrition>() {
-            @Override
-            public void onResponse(Call<FoodNutrition> call, Response<FoodNutrition> response) {
-                Log.d(TAG, "onResponse: getFoodNutrition = " + response.body().getText());
-                FoodNutrition responsBody = response.body();
-                Picasso.get().load(responsBody.getParsed().get(0).getFood().getImage()).into(ivFoodImage);
-                tvFoodName.setText(responsBody.getParsed().get(0).getFood().getLabel());
-                tvFoodEnergy.setText(responsBody.getParsed().get(0).getFood().getNutrients().getEnercKcal().intValue() + "kcal");
-                tvFoodProtein.setText(Double.toString(responsBody.getParsed().get(0).getFood().getNutrients().getProcnt())  + "g");
-                tvFoodFat.setText(Double.toString(responsBody.getParsed().get(0).getFood().getNutrients().getFat()) + "g");
-                tvFoodCarbs.setText(Double.toString(responsBody.getParsed().get(0).getFood().getNutrients().getChocdf()) + "g");
-                tvFoodCategory.setText(responsBody.getParsed().get(0).getFood().getCategory());
 
-                listFoodHint = responsBody.getHints();
-                hintAdapter = new HintAdapter(listFoodHint, foodNutritionActivity);
-                recyclerView.setAdapter(hintAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<FoodNutrition> call, Throwable t) {
-                Log.d(TAG, "onFailure: Response Failed = " + t.getMessage());
-            }
-        });
-    }
-
-    @Override
-    public void onHintClick(int position) {
-        Intent intent = new Intent(this, FoodNutritionActivity.class);
-        intent.putExtra("FoodName", listFoodHint.get(position).getFood().getLabel());
-        startActivity(intent);
+    public void click(View v) {
+        switch(v.getId()) {
+            case R.id.back_button:
+                Log.d(TAG, "click: Top back button");
+                finish();
+        }
     }
 }

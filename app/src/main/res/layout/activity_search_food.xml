@@ -4,18 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    tools:context=".SearchFoodActivity">
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="40dp"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:onClick="click"
+        android:src="@drawable/baseline_arrow_back_ios_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#000000" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
-        android:text="Recipes"
         android:textColor="@color/black"
+        android:text="Results"
         android:textSize="24dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/back_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -30,16 +43,16 @@
         app:layout_constraintTop_toTopOf="@+id/textView7"
         app:layout_constraintVertical_bias="1.0" />
 
-    <EditText
-        android:id="@+id/et_search_recipe"
+    <AutoCompleteTextView
+        android:id="@+id/actv_search_food"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
+        android:layout_marginRight="32dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/rounded_search_bar"
         android:completionThreshold="1"
         android:dropDownHeight="150dp"
-        android:hint="Get Nutritional Value..."
+        android:hint="Search food..."
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:maxLines="1"
@@ -48,7 +61,7 @@
         android:textCursorDrawable="@drawable/edit_text_cursor"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -59,29 +72,21 @@
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/baseline_search_black_24dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/et_search_recipe"
-        app:layout_constraintEnd_toEndOf="@+id/et_search_recipe"
-        app:layout_constraintTop_toTopOf="@+id/et_search_recipe" />
+        app:layout_constraintBottom_toBottomOf="@+id/actv_search_food"
+        app:layout_constraintEnd_toEndOf="@+id/actv_search_food"
+        app:layout_constraintTop_toTopOf="@+id/actv_search_food" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_recipe"
+        android:padding="24dp"
+        android:id="@+id/list_food"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
         android:clipToPadding="false"
-        android:paddingBottom="200dp"
+        android:paddingBottom="100dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/row_item_recipe" />
-
-    <ProgressBar
-        android:id="@+id/infinite_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/colorPrimaryVariant"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        tools:listitem="@layout/row_item_food"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

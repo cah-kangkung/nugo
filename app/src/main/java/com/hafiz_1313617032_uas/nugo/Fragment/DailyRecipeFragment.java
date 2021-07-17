@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.hafiz_1313617032_uas.nugo.Adapter.HintAdapter;
 import com.hafiz_1313617032_uas.nugo.Adapter.RecipeAdapter;
 import com.hafiz_1313617032_uas.nugo.FoodNutritionActivity;
 import com.hafiz_1313617032_uas.nugo.MainActivity;
