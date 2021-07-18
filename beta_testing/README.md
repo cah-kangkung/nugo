@@ -2,7 +2,7 @@
 
 ## Date
 
-Thursday, 17 July 2021
+Saturday, 17 July 2021
 
 ## Tester
 
