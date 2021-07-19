@@ -1,15 +1,19 @@
 package com.hafiz_1313617032_uas.nugo.Fragment;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +42,11 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
-    
+
+    private OnHomeFragmentListener onHomeFragmentListener;
+
     private AutoCompleteTextView actvSearchFood;
-    private ImageView ivButtonSearch, ivButtonBasket;
+    private ImageView ivButtonSearch, ivButtonBasket, ivNavDrawerButton;
     private TextView tvBasketLabel;
 
     private ApiInterface apiInterface;
@@ -52,8 +58,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        return view;
     }
 
     @Override
@@ -66,6 +75,14 @@ public class HomeFragment extends Fragment {
         this.view = view;
 
         getBasketItemCount(this.view);
+
+        ivNavDrawerButton = view.findViewById(R.id.nav_drawer_button);
+        ivNavDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onHomeFragmentListener.onAction();
+            }
+        });
 
         // search bar
         actvSearchFood = (AutoCompleteTextView) view.findViewById(R.id.autocomplete_search_food);
@@ -150,4 +167,16 @@ public class HomeFragment extends Fragment {
         tvBasketLabel.setText(Integer.toString(count));
     }
 
+    // setter getter for listener
+    public OnHomeFragmentListener getOnHomeFragmentListener() {
+        return onHomeFragmentListener;
+    }
+
+    public void setOnHomeFragmentListener(OnHomeFragmentListener onHomeFragmentListener) {
+        this.onHomeFragmentListener = onHomeFragmentListener;
+    }
+
+    public interface OnHomeFragmentListener {
+        void onAction();
+    }
 }

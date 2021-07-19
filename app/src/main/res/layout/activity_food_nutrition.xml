@@ -18,7 +18,7 @@
         android:src="@drawable/baseline_arrow_back_ios_new_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#000000" />
+        app:tint="@color/colorNavText" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout1"
@@ -97,7 +97,7 @@
             android:id="@+id/label_energy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="6dp"
             android:background="@drawable/rounded_activity_bar"
             android:orientation="vertical"
             android:paddingHorizontal="28dp"
@@ -127,7 +127,7 @@
             android:id="@+id/label_protein"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="6dp"
             android:background="@drawable/rounded_activity_bar"
             android:orientation="vertical"
             android:paddingHorizontal="28dp"
@@ -158,7 +158,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="6dp"
             android:background="@drawable/rounded_activity_bar"
             android:orientation="vertical"
             android:paddingHorizontal="28dp"
@@ -188,7 +188,7 @@
             android:id="@+id/label_carbo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="6dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/rounded_activity_bar"
             android:orientation="vertical"
@@ -238,14 +238,12 @@
             <Button
                 android:id="@+id/button_add_to_basket"
                 style="?android:attr/borderlessButtonStyle"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
                 android:onClick="click"
                 android:text="Add to Basket" />
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

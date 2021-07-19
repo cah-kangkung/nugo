@@ -8,9 +8,9 @@ NuGo is an app where users can find nutritional values of food they are eating. 
 -  **Calorie Calculator**, make a calculation about users recommended calorie intake in a day based on height, weight, age, and activity
 -  **Daily Recipe**, a list of healty daily recipe food
 
-## Playstore Link (Internal Test)
+## Playstore Link (Production)
 
-Playstore: [Link](https://play.google.com/apps/internaltest/4699531124589624895)
+Playstore: [Link](https://play.google.com/store/apps/details?id=com.hafiz_1313617032_uas.nugo)
 
 ## Advance Topic
 

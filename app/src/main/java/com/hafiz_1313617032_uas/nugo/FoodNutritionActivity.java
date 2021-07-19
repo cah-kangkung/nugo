@@ -33,9 +33,9 @@ import retrofit2.Response;
 public class FoodNutritionActivity extends AppCompatActivity {
     private static final String TAG = "FoodNutritionActivity";
 
-    public static FoodNutritionActivity foodNutritionActivity;
+    public FoodNutritionActivity foodNutritionActivity;
 
-    private ApiInterface apiInterface;
+    ApiInterface apiInterface;
 
     BasketDatabaseHelper basketDatabaseHelper;
 
@@ -50,7 +50,7 @@ public class FoodNutritionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_nutrition);
 
-         basketDatabaseHelper = new BasketDatabaseHelper(this);
+        basketDatabaseHelper = new BasketDatabaseHelper(this);
 
         initVariable();
 
@@ -101,7 +101,7 @@ public class FoodNutritionActivity extends AppCompatActivity {
             ContentValues values = new ContentValues();
             values.put(BasketEntry.COLUMN_NAME_FOOD_COUNT, basketItem.getFood_count() + 1);
 
-            // udpate by name
+            // update by name
             String whereClause = BasketEntry.COLUMN_NAME_FOOD_NAME + " = ?";
             String[] whereArgs = {food.getLabel()};
             int rowsAffected = basketDatabaseHelper.updateBasketItem(values, whereClause, whereArgs);
@@ -114,10 +114,12 @@ public class FoodNutritionActivity extends AppCompatActivity {
             case R.id.back_button:
                 Log.d(TAG, "click: Top back button");
                 finish();
+                break;
             case R.id.button_add_to_basket:
                 Log.d(TAG, "click: Add to Basket");
                 Toast.makeText(foodNutritionActivity, food.getLabel() + " added to basket", Toast.LENGTH_SHORT).show();
                 addToBasket();
+                break;
         }
     }
 }

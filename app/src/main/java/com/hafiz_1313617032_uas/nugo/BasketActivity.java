@@ -26,4 +26,5 @@ public class BasketActivity extends AppCompatActivity {
         List<Basket> basketItems = basketDatabaseHelper.readAllBasketItems(null, null, null);
         Log.d(TAG, "onViewCreated: " + basketItems);
     }
+    
 }

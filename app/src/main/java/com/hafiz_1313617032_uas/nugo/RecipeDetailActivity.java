@@ -46,6 +46,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             case R.id.back_button:
                 Log.d(TAG, "click: Top back button");
                 finish();
+                break;
         }
     }
 }

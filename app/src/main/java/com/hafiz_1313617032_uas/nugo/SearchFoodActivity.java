@@ -190,6 +190,7 @@ public class SearchFoodActivity extends AppCompatActivity implements FoodAdapter
             case R.id.back_button:
                 Log.d(TAG, "click: Top Back Button");
                 finish();
+                break;
         }
     }
 

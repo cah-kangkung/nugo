@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/nav_drawer_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="28dp"
@@ -16,7 +16,7 @@
         android:src="@drawable/baseline_menu_black_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#C3BDBD" />
+        app:tint="@color/colorNavText" />
 
     <ImageView
         android:id="@+id/button_basket"
@@ -25,10 +25,10 @@
         android:layout_marginEnd="40dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/outline_shopping_basket_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_drawer_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView2"
-        app:tint="#FFC3BDBD" />
+        app:layout_constraintTop_toTopOf="@+id/nav_drawer_button"
+        app:tint="@color/colorNavText" />
 
     <TextView
         android:id="@+id/tv_basket_item_count"
@@ -55,6 +55,7 @@
         android:textAlignment="center"
         android:textSize="20dp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"

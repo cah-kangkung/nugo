@@ -1,15 +1,22 @@
 package com.hafiz_1313617032_uas.nugo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,13 +25,15 @@ import com.hafiz_1313617032_uas.nugo.Fragment.CalculatorFragment;
 import com.hafiz_1313617032_uas.nugo.Fragment.DailyRecipeFragment;
 import com.hafiz_1313617032_uas.nugo.Fragment.HomeFragment;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, HomeFragment.OnHomeFragmentListener {
 
     private static final String TAG = "MainActivity";
 
-    final Fragment fragment1 = new HomeFragment();
-    final Fragment fragment2 = new CalculatorFragment();
-    final Fragment fragment3 = new DailyRecipeFragment();
+    private ImageView ivNavDrawerButton;
+
+    final HomeFragment fragment1 = new HomeFragment();
+    final CalculatorFragment fragment2 = new CalculatorFragment();
+    final DailyRecipeFragment fragment3 = new DailyRecipeFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragment1;
 
@@ -35,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
+        fragment1.setOnHomeFragmentListener(this);
+
         // commit fragment to fm
         fm.beginTransaction().add(R.id.fragment_container, fragment3, "3").hide(fragment3).commit();
         fm.beginTransaction().add(R.id.fragment_container, fragment2, "2").hide(fragment2).commit();
@@ -44,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(this);
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -68,4 +80,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return false;
     }
 
+    @Override
+    public void onAction() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.openDrawer(GravityCompat.START);
+    }
 }
